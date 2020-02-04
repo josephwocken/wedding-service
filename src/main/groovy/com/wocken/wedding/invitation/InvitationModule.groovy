@@ -7,5 +7,6 @@ class InvitationModule extends AbstractModule {
     protected void configure() {
         bind(InvitationDao).toInstance(new InvitationDao())
         bind(InvitationHandler)
+        bind(InvitationMapper)
     }
 }

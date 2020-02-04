@@ -1,7 +1,10 @@
 package com.wocken.wedding.invitationsearch
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.wocken.wedding.guest.Guest
+import com.wocken.wedding.guest.GuestDao
 import com.wocken.wedding.invitation.Invitation
+import com.wocken.wedding.invitation.InvitationMapper
 import ratpack.exec.Promise
 import ratpack.func.Block
 import ratpack.handling.ByMethodSpec
@@ -14,16 +17,21 @@ import ratpack.jackson.Jackson
 import javax.inject.Inject
 import javax.inject.Singleton
 import java.nio.charset.Charset
+import java.util.stream.Collectors
 
 @Singleton
 class GuestInvitationSearchHandler implements Handler {
 
     private final GuestInvitationService guestInvitationService
+    private final GuestDao guestDao
+    private final InvitationMapper invitationMapper
     private final ObjectMapper objectMapper
 
     @Inject
-    GuestInvitationSearchHandler(GuestInvitationService guestInvitationService) {
+    GuestInvitationSearchHandler(GuestInvitationService guestInvitationService, GuestDao guestDao, InvitationMapper invitationMapper) {
         this.guestInvitationService = guestInvitationService
+        this.guestDao = guestDao
+        this.invitationMapper = invitationMapper
         this.objectMapper = new ObjectMapper()
     }
 
@@ -56,7 +64,8 @@ class GuestInvitationSearchHandler implements Handler {
                         })
                         .then({ List<Invitation> invitations ->
                             if (invitations && !invitations.isEmpty()) {
-                                String response = objectMapper.writeValueAsString(invitations)
+                                List<InvitationDTO> invitationDTOs = invitationMapper.mapToInvitationDTOs(invitations)
+                                String response = objectMapper.writeValueAsString(invitationDTOs)
                                 println("Response: $response")
                                 ctx.getResponse()
                                         .status(Status.OK)

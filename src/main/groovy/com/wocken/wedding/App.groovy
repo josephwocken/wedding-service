@@ -37,6 +37,7 @@ class App {
                         .path("guests", GuestHandler)
                         .path("guests/:id", GuestHandler)
                         .path("invitations", InvitationHandler)
+                        .path("invitations/:id", InvitationHandler)
                         .path("guest_invitations/search", GuestInvitationSearchHandler)
                 })
         })

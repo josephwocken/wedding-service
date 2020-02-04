@@ -66,6 +66,18 @@ class InvitationDao {
         }
     }
 
+    Invitation getInvitation(long invitationId) {
+        Statement statement = connection.createStatement()
+        ResultSet rs = statement.executeQuery("SELECT * FROM invitation WHERE id = $invitationId LIMIT 1")
+        try {
+            while (rs.next()) {
+                return mapToInvitation(rs)
+            }
+        } finally {
+            statement.close()
+        }
+    }
+
     /**
      * Only returns first invitation in case
      * guest is part of multiple invitations for some
