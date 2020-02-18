@@ -37,6 +37,9 @@ class InvitationMapper {
                 .map({ Long guestId ->
                     guestDao.getGuestById(guestId)
                 })
+                .filter({ Guest guest ->
+                    null != guest
+                })
                 .collect(Collectors.toList())
         return new InvitationDTO(
                 invitation.getInvitationId(),

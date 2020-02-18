@@ -14,18 +14,33 @@ class InvitationDTO {
     @JsonProperty("invitation_id")
     private final long invitationId
     @JsonProperty("rsvped")
-    private final boolean rsvped
+    private final Boolean rsvped
     @JsonProperty("guests")
     private final List<Guest> guests
 
     @JsonCreator
     InvitationDTO(
             @JsonProperty("invitation_id") long invitationId,
-            @JsonProperty("rsvped") boolean rsvped,
+            @JsonProperty("rsvped") Boolean rsvped,
             @JsonProperty("guests") List<Guest> guests
     ) {
         this.invitationId = invitationId
         this.rsvped = rsvped
         this.guests = guests
+    }
+
+    @JsonIgnore
+    List<Guest> getGuests() {
+        return this.guests
+    }
+
+    @JsonIgnore
+    long getInvitationId() {
+        return this.invitationId
+    }
+
+    @JsonIgnore
+    Boolean getRsvped() {
+        return this.rsvped
     }
 }

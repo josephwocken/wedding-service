@@ -43,7 +43,6 @@ class InvitationDao {
         return invitations
     }
 
-    //TODO: create invitation method
     void createInvitation(Invitation invitation) {
         if (!(invitation?.getInvitationId()
                 || invitation?.getGuestIds()
@@ -93,6 +92,16 @@ class InvitationDao {
             while (rs.next()) {
                 return mapToInvitation(rs)
             }
+        } finally {
+            statement.close()
+        }
+    }
+
+    void updateRsvped(long invitationId, boolean rsvped) {
+        String update = "UPDATE invitation SET rsvped = $rsvped WHERE id = $invitationId"
+        Statement statement = connection.createStatement()
+        try {
+            statement.executeUpdate(update)
         } finally {
             statement.close()
         }
